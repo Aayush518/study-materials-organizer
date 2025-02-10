@@ -24,29 +24,29 @@ const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 const formatMarkdown = (text: string): string => {
-  // Convert headers
-  text = text.replace(/^### (.*$)/gm, '<h3 class="text-lg font-bold text-indigo-600 mt-4 mb-2">$1</h3>');
-  text = text.replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold text-indigo-700 mt-6 mb-3">$1</h2>');
-  text = text.replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-indigo-800 mt-8 mb-4">$1</h1>');
+  // Convert headers with word-wrap
+  text = text.replace(/^### (.*$)/gm, '<h3 class="text-lg font-bold text-indigo-600 mt-4 mb-2 break-words whitespace-pre-wrap">$1</h3>');
+  text = text.replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold text-indigo-700 mt-6 mb-3 break-words whitespace-pre-wrap">$1</h2>');
+  text = text.replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-indigo-800 mt-8 mb-4 break-words whitespace-pre-wrap">$1</h1>');
   
-  // Convert code blocks
-  text = text.replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-800 text-gray-100 p-4 rounded-lg my-4 overflow-x-auto">$1</pre>');
+  // Convert code blocks with horizontal scrolling only for code
+  text = text.replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-800 text-gray-100 p-4 rounded-lg my-4 overflow-x-auto whitespace-pre">$1</pre>');
   
   // Convert inline code
-  text = text.replace(/`([^`]+)`/g, '<code class="bg-gray-100 text-indigo-600 px-1 rounded">$1</code>');
+  text = text.replace(/`([^`]+)`/g, '<code class="bg-gray-100 text-indigo-600 px-1 rounded whitespace-normal break-words">$1</code>');
   
-  // Convert bold
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-indigo-900">$1</strong>');
+  // Convert bold with wrapping
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-indigo-900 break-words whitespace-pre-wrap">$1</strong>');
   
-  // Convert italics
-  text = text.replace(/\*(.*?)\*/g, '<em class="italic text-indigo-700">$1</em>');
+  // Convert italics with wrapping
+  text = text.replace(/\*(.*?)\*/g, '<em class="italic text-indigo-700 break-words whitespace-pre-wrap">$1</em>');
   
-  // Convert lists
-  text = text.replace(/^\s*[-*+]\s+(.*)/gm, '<li class="ml-4 mb-2 flex items-start"><span class="inline-block w-2 h-2 bg-indigo-400 rounded-full mt-2 mr-2"></span>$1</li>');
-  text = text.replace(/^\s*\d+\.\s+(.*)/gm, '<li class="ml-4 mb-2 flex items-start"><span class="inline-block w-5 h-5 bg-indigo-100 rounded-full text-indigo-600 text-sm flex items-center justify-center mr-2">$1</span>$2</li>');
+  // Convert lists with wrapping
+  text = text.replace(/^\s*[-*+]\s+(.*)/gm, '<li class="ml-4 mb-2 flex items-start break-words whitespace-pre-wrap"><span class="inline-block w-2 h-2 bg-indigo-400 rounded-full mt-2 mr-2 flex-shrink-0"></span><span class="flex-1">$1</span></li>');
+  text = text.replace(/^\s*\d+\.\s+(.*)/gm, '<li class="ml-4 mb-2 flex items-start break-words whitespace-pre-wrap"><span class="inline-block w-5 h-5 bg-indigo-100 rounded-full text-indigo-600 text-sm flex items-center justify-center mr-2 flex-shrink-0">$1</span><span class="flex-1">$2</span></li>');
   
-  // Convert blockquotes
-  text = text.replace(/^\s*>\s+(.*)/gm, '<blockquote class="border-l-4 border-indigo-300 pl-4 my-4 text-gray-600 italic">$1</blockquote>');
+  // Convert blockquotes with wrapping
+  text = text.replace(/^\s*>\s+(.*)/gm, '<blockquote class="border-l-4 border-indigo-300 pl-4 my-4 text-gray-600 italic break-words whitespace-pre-wrap">$1</blockquote>');
   
   // Convert horizontal rules
   text = text.replace(/^---$/gm, '<hr class="my-6 border-t-2 border-indigo-100">');
@@ -241,7 +241,7 @@ Format your response with:
               )}
             </div>
             <div
-              className={`flex-1 p-4 rounded-lg break-words ${
+              className={`flex-1 p-4 rounded-lg break-words whitespace-pre-wrap max-w-full ${
                 message.role === 'assistant'
                   ? message.type === 'error'
                     ? 'bg-red-50 text-red-800'
@@ -252,16 +252,18 @@ Format your response with:
               }`}
             >
               {message.role === 'assistant' && message.context === 'study' && relevantContext && (
-                <div className="mb-3 p-2 bg-indigo-100 rounded text-sm text-indigo-700 flex items-start gap-2">
-                  <Search className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-medium mb-1">Relevant context found:</p>
-                    <p className="line-clamp-2">{relevantContext}</p>
+                <div className="mb-3 p-2 bg-indigo-100 rounded text-sm text-indigo-700 overflow-hidden">
+                  <div className="flex items-start gap-2">
+                    <Search className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium mb-1 break-words">Relevant context found:</p>
+                      <p className="break-words overflow-hidden overflow-ellipsis line-clamp-2">{relevantContext}</p>
+                    </div>
                   </div>
                 </div>
               )}
               <div 
-                className="prose max-w-none"
+                className="prose max-w-none break-words whitespace-pre-wrap"
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(message.content) }}
               />
             </div>
