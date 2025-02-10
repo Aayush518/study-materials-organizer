@@ -5,6 +5,7 @@ A powerful, modern document management system built with React, TypeScript, and 
 ## Features
 
 ### 📚 Document Management
+
 - Support for pdfs
 - Hierarchical folder organization
 - Drag-and-drop file upload
@@ -13,6 +14,7 @@ A powerful, modern document management system built with React, TypeScript, and 
 - Advanced search functionality
 
 ### 🔍 PDF Viewer
+
 - Smooth scrolling and page navigation
 - Zoom controls
 - Page thumbnails
@@ -20,6 +22,7 @@ A powerful, modern document management system built with React, TypeScript, and 
 - Responsive layout
 
 ### 🤖 AI Integration
+
 - AI-powered document analysis using Google's Gemini AI
 - Smart document summarization
 - Question answering about document content
@@ -27,6 +30,7 @@ A powerful, modern document management system built with React, TypeScript, and 
 - Flashcard creation
 
 ### 🎨 User Interface
+
 - Modern, responsive design
 - Dark/Light theme support
 - Multiple view modes (Grid, List, Compact)
@@ -34,6 +38,7 @@ A powerful, modern document management system built with React, TypeScript, and 
 - Smooth animations and transitions
 
 ### 💾 Data Management
+
 - Efficient file storage using IndexedDB
 - Automatic content indexing
 - File metadata caching
@@ -42,6 +47,7 @@ A powerful, modern document management system built with React, TypeScript, and 
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 - Google Gemini API key
@@ -49,22 +55,26 @@ A powerful, modern document management system built with React, TypeScript, and 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/Aayush518/study-materials-organizer.git
 cd study-materials-organizer
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the root directory:
+
 ```env
 VITE_GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 4. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -76,19 +86,6 @@ The application uses several environment variables:
 - `VITE_GEMINI_API_KEY`: Your Google Gemini API key
 - `VITE_POSTHOG_API_KEY`: (Optional) PostHog analytics key
 - `VITE_SENTRY_DSN`: (Optional) Sentry error tracking DSN
-
-## Project Structure
-
-```
-src/
-├── components/         # React components
-│   ├── viewers/       # File viewer components
-│   └── ui/            # Common UI components
-├── store/             # Zustand store and slices
-├── services/          # External services integration
-├── utils/             # Utility functions
-└── types/             # TypeScript type definitions
-```
 
 ## Contributing
 
