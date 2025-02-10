@@ -177,7 +177,7 @@ export const PDFViewer: React.FC<ViewerProps> = ({
       {/* PDF Document */}
       <div 
         ref={containerRef}
-        className="flex-1 overflow-y-auto scroll-smooth bg-gray-50"
+        className="flex-1 overflow-y-auto scroll-smooth bg-gray-50 flex justify-center"
       >
         <Document
           file={file.content}
@@ -189,8 +189,9 @@ export const PDFViewer: React.FC<ViewerProps> = ({
             setIsLoading(false);
           }}
           loading={null}
+          className="max-w-4xl mx-auto"
         >
-          <div className="max-w-5xl mx-auto py-2">
+          <div className="py-2">
             {Array.from({ length: numPages }, (_, i) => i + 1).map((pageNum) => (
               <div
                 key={pageNum}

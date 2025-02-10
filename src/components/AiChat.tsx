@@ -82,12 +82,8 @@ export const AiChat: React.FC<AiChatProps> = ({ pdfContent, onClose, currentPage
 
   const cleanPDFContent = (content: string): string => {
     try {
-      // Remove data URL prefix if present
       const base64Content = content.replace(/^data:application\/pdf;base64,/, '');
-      
-      // Decode base64 content
       const decodedContent = atob(base64Content);
-      // Convert to text and clean up
       return decodedContent.replace(/[^\x20-\x7E]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
@@ -101,11 +97,7 @@ export const AiChat: React.FC<AiChatProps> = ({ pdfContent, onClose, currentPage
     try {
       const cleanedContent = cleanPDFContent(pdfContent);
       const words = query.toLowerCase().split(/\s+/);
-      
-      // Split content into paragraphs or sections
       const sections = cleanedContent.split(/\n\n+/);
-      
-      // Score each section
       const scoredSections = sections.map(section => {
         const score = words.reduce((acc, word) => {
           return acc + (section.toLowerCase().includes(word) ? 1 : 0);
@@ -113,7 +105,6 @@ export const AiChat: React.FC<AiChatProps> = ({ pdfContent, onClose, currentPage
         return { text: section, score };
       });
 
-      // Get the most relevant sections
       const relevantSections = scoredSections
         .filter(section => section.score > 0)
         .sort((a, b) => b.score - a.score)
@@ -238,7 +229,7 @@ Format your response with:
               message.role === 'assistant' ? 'items-start' : 'items-start flex-row-reverse'
             } animate-fade-in`}
           >
-            <div className={`p-2 rounded-full ${
+            <div className={`p-2 rounded-full flex-shrink-0 ${
               message.role === 'assistant' 
                 ? 'bg-indigo-100 text-indigo-600'
                 : 'bg-gray-100 text-gray-600'
@@ -250,7 +241,7 @@ Format your response with:
               )}
             </div>
             <div
-              className={`flex-1 p-4 rounded-lg ${
+              className={`flex-1 p-4 rounded-lg break-words ${
                 message.role === 'assistant'
                   ? message.type === 'error'
                     ? 'bg-red-50 text-red-800'
@@ -302,7 +293,7 @@ Format your response with:
           <button
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 whitespace-nowrap"
           >
             <Send className="w-5 h-5" />
             Send
